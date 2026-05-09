@@ -1,0 +1,17 @@
+{
+  "name": "Zeno — AI Agent Platform for Agencies",
+  "short_name": "Zeno",
+  "description": "Scale your agency. Not your headcount.",
+  "start_url": "/app/command",
+  "display": "standalone",
+  "background_color": "#080B10",
+  "theme_color": "#3B82F6",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
