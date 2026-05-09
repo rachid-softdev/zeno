@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { mockTemplates } from '../lib/mockData';
 import { Copy, Edit, Trash2, Share2, Plus, Search } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 export function Templates() {
   const navigate = useNavigate();
@@ -17,7 +18,9 @@ export function Templates() {
             <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted" />
             <input placeholder="Search templates..." className="w-48 bg-bg-surface border border-border-subtle rounded-lg pl-9 pr-3 py-2 text-sm text-text-primary placeholder:text-text-muted focus:outline-none focus:border-accent-primary" />
           </div>
-          <button className="flex items-center gap-2 px-4 py-2 bg-accent-primary text-white rounded-lg text-sm font-medium hover:brightness-110 transition-all active:scale-95">
+          <button
+            onClick={() => toast.success('Template creation coming soon')}
+            className="flex items-center gap-2 px-4 py-2 bg-accent-primary text-white rounded-lg text-sm font-medium hover:brightness-110 transition-all active:scale-95">
             <Plus size={16} /> New template
           </button>
         </div>
@@ -63,16 +66,18 @@ export function Templates() {
               <span>Updated {template.lastUpdated}</span>
             </div>
             <div className="flex items-center gap-1" onClick={(e) => e.stopPropagation()}>
-              <button className="flex-1 py-1.5 text-xs bg-accent-primary/10 text-accent-primary rounded-lg hover:bg-accent-primary/20 transition-colors flex items-center justify-center gap-1">
+              <button
+                onClick={() => toast.success('Select a client to deploy to')}
+                className="flex-1 py-1.5 text-xs bg-accent-primary/10 text-accent-primary rounded-lg hover:bg-accent-primary/20 transition-colors flex items-center justify-center gap-1">
                 <Share2 size={12} /> Deploy
               </button>
               <button onClick={() => navigate(`/app/templates/${template.id}`)} className="p-1.5 rounded-lg border border-border-subtle text-text-secondary hover:border-border-active transition-colors">
                 <Edit size={12} />
               </button>
-              <button className="p-1.5 rounded-lg border border-border-subtle text-text-secondary hover:border-border-active transition-colors">
+              <button onClick={() => toast.success('Template duplicated')} className="p-1.5 rounded-lg border border-border-subtle text-text-secondary hover:border-border-active transition-colors">
                 <Copy size={12} />
               </button>
-              <button className="p-1.5 rounded-lg border border-border-subtle text-text-secondary hover:text-accent-danger hover:border-accent-danger/30 transition-colors">
+              <button onClick={() => toast('Delete template? Add confirmation later')} className="p-1.5 rounded-lg border border-border-subtle text-text-secondary hover:text-accent-danger hover:border-accent-danger/30 transition-colors">
                 <Trash2 size={12} />
               </button>
             </div>

@@ -20,6 +20,7 @@ import {
   Mail, Bell, Clock, Globe, UserPlus, ShoppingCart, FileText,
   MessageSquare, X, Settings, AlertCircle,
 } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 // Custom Node Types
 function TriggerNode({ data }: RFNodeProps) {
@@ -328,10 +329,14 @@ export function WorkflowBuilder() {
             <span className="text-xs text-text-muted">Ran 42 times · Last: 2h ago · Success: 94%</span>
           </div>
           <div className="flex items-center gap-2">
-            <button className="flex items-center gap-1.5 px-3 py-1.5 border border-border-subtle rounded-lg text-xs text-text-secondary hover:border-border-active transition-colors">
+            <button
+              onClick={() => toast.success('Workflow test started (simulated)')}
+              className="flex items-center gap-1.5 px-3 py-1.5 border border-border-subtle rounded-lg text-xs text-text-secondary hover:border-border-active transition-colors">
               <Play size={14} /> Test
             </button>
-            <button className="flex items-center gap-1.5 px-3 py-1.5 bg-accent-primary text-white rounded-lg text-xs font-medium hover:brightness-110 transition-all">
+            <button
+              onClick={() => toast.success('Workflow saved')}
+              className="flex items-center gap-1.5 px-3 py-1.5 bg-accent-primary text-white rounded-lg text-xs font-medium hover:brightness-110 transition-all">
               <Save size={14} /> Save
             </button>
           </div>

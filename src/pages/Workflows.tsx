@@ -2,7 +2,8 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { mockWorkflows } from '../lib/mockData';
 import { ExecutionTimeline } from '../components/ui/ExecutionTimeline';
-import { Play, Pause, Settings, BarChart3, X } from 'lucide-react';
+import { Play, Pause, Settings, BarChart3 } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 export function Workflows() {
   const { id } = useParams<{ id: string }>();
@@ -17,7 +18,9 @@ export function Workflows() {
           <h1 className="font-display text-2xl font-bold text-text-primary">Workflows ({workflows.length})</h1>
           <p className="text-text-secondary text-sm mt-1">Automate multi-step processes across agents and tools.</p>
         </div>
-        <button className="px-4 py-2 bg-accent-primary text-white rounded-lg text-sm font-medium hover:brightness-110 transition-all active:scale-95">
+        <button
+          onClick={() => toast.success('Workflow creation coming soon')}
+          className="px-4 py-2 bg-accent-primary text-white rounded-lg text-sm font-medium hover:brightness-110 transition-all active:scale-95">
           + New workflow
         </button>
       </div>
@@ -48,11 +51,15 @@ export function Workflows() {
 
             <div className="flex items-center gap-2">
               {wf.status === 'active' ? (
-                <button className="flex items-center gap-1.5 px-3 py-1.5 bg-bg-elevated border border-border-subtle rounded-lg text-xs text-text-secondary">
+                <button
+                  onClick={() => toast('Workflow paused')}
+                  className="flex items-center gap-1.5 px-3 py-1.5 bg-bg-elevated border border-border-subtle rounded-lg text-xs text-text-secondary">
                   <Pause size={14} /> Pause
                 </button>
               ) : (
-                <button className="flex items-center gap-1.5 px-3 py-1.5 bg-accent-primary/10 text-accent-primary rounded-lg text-xs">
+                <button
+                  onClick={() => toast.success('Workflow activated')}
+                  className="flex items-center gap-1.5 px-3 py-1.5 bg-accent-primary/10 text-accent-primary rounded-lg text-xs">
                   <Play size={14} /> Activate
                 </button>
               )}

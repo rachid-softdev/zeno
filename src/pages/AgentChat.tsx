@@ -9,6 +9,7 @@ import { streamChat, isClaudeConfigured } from '../lib/claude';
 import { AgentInspector } from '../components/ui/AgentInspector';
 import type { ConversationMessage } from '../lib/types';
 import { Send, Paperclip, Settings, Info, History, BarChart3, ArrowLeft, Sparkles, Zap, Bug, ShieldAlert, Slash } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 export function AgentChat() {
   const { id, agentId } = useParams<{ id: string; agentId: string }>();
@@ -205,7 +206,7 @@ Always:
               {agent.status === 'active' ? 'Active' : 'Idle'} · {agent.role}
             </div>
           </div>
-          <button className="p-1.5 rounded hover:bg-bg-hover text-text-muted">
+          <button onClick={() => toast('Agent settings coming soon')} className="p-1.5 rounded hover:bg-bg-hover text-text-muted">
             <Settings size={16} />
           </button>
           <button onClick={() => setShowInspector(true)} className="p-1.5 rounded hover:bg-bg-hover text-text-muted hover:text-accent-primary" title="Agent Inspector">
@@ -327,7 +328,7 @@ Always:
           )}
 
           <div className="flex items-end gap-2">
-            <button className="p-2 rounded-lg hover:bg-bg-hover text-text-muted transition-colors">
+            <button onClick={() => toast('Attachments coming soon')} className="p-2 rounded-lg hover:bg-bg-hover text-text-muted transition-colors">
               <Paperclip size={18} />
             </button>
             <textarea

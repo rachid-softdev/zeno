@@ -134,7 +134,7 @@ export function Sidebar() {
       {!isClientView && !sidebarCollapsed && (
         <div className="px-3 pb-3">
           <button
-            onClick={() => navigate('/app/clients/new')}
+            onClick={() => { navigate('/app/clients/new'); window.dispatchEvent(new CustomEvent('open-new-client-modal')); }}
             className="w-full flex items-center gap-2 px-3 py-2 rounded-lg border border-dashed border-border-subtle text-text-muted hover:text-text-secondary hover:border-border-active transition-colors text-sm"
           >
             <Plus size={16} />

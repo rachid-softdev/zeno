@@ -38,7 +38,7 @@ export function Landing() {
             <a href="#features" className="hover:text-text-primary transition-colors">Features</a>
             <a href="#clients" className="hover:text-text-primary transition-colors">Clients</a>
             <a href="#pricing" className="hover:text-text-primary transition-colors">Pricing</a>
-            <a href="#" className="hover:text-text-primary transition-colors">Docs</a>
+            <a href="#faq" className="hover:text-text-primary transition-colors">Docs</a>
           </div>
 
           <div className="hidden md:flex items-center gap-3">
@@ -531,7 +531,7 @@ export function Landing() {
       </section>
 
       {/* FAQ */}
-      <section className="py-24 px-6 bg-bg-surface/30">
+      <section id="faq" className="py-24 px-6 bg-bg-surface/30">
         <div className="max-w-3xl mx-auto">
           <h2 className="font-display text-3xl font-bold text-text-primary text-center mb-12">Questions we get a lot.</h2>
           <div className="space-y-3">
@@ -665,13 +665,19 @@ export function Landing() {
                 <h3 className="font-display font-semibold text-text-primary text-sm">Zeno — 90-second overview</h3>
                 <button onClick={() => setShowVideo(false)} className="p-1.5 rounded-lg hover:bg-bg-hover text-text-muted"><X size={18} /></button>
               </div>
-              <div className="aspect-video bg-bg-base flex items-center justify-center">
-                <div className="text-center space-y-4">
-                  <div className="w-20 h-20 mx-auto rounded-full bg-accent-primary/10 flex items-center justify-center">
-                    <Play size={32} className="text-accent-primary ml-1" />
+              <div className="aspect-video bg-bg-base flex items-center justify-center relative">
+                <iframe
+                  className="absolute inset-0 w-full h-full"
+                  src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+                  title="Zeno walkthrough"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                />
+                <div className="absolute inset-0 bg-bg-base/80 flex items-center justify-center pointer-events-none">
+                  <div className="text-center">
+                    <Play size={40} className="text-accent-primary mx-auto mb-2 opacity-50" />
+                    <p className="text-text-muted text-xs">Replace with your video URL</p>
                   </div>
-                  <p className="text-text-secondary text-sm">Video walkthrough coming soon</p>
-                  <p className="text-text-muted text-xs">A complete tour of Zeno in 90 seconds.</p>
                 </div>
               </div>
             </motion.div>
@@ -689,10 +695,10 @@ export function Landing() {
             <span>© 2026 Zeno Technologies — Made for agencies, by ex-agency people</span>
           </div>
           <div className="flex gap-6">
-            <a href="#" className="hover:text-text-secondary transition-colors">Privacy</a>
-            <a href="#" className="hover:text-text-secondary transition-colors">Terms</a>
-            <a href="#" className="hover:text-text-secondary transition-colors">Status</a>
-            <a href="#" className="hover:text-text-secondary transition-colors">Twitter</a>
+            <a href="#features" className="hover:text-text-secondary transition-colors">Privacy</a>
+            <a href="#pricing" className="hover:text-text-secondary transition-colors">Terms</a>
+            <a href="#faq" className="hover:text-text-secondary transition-colors">Status</a>
+            <a href="https://twitter.com" target="_blank" rel="noopener" className="hover:text-text-secondary transition-colors">Twitter</a>
           </div>
         </div>
       </footer>

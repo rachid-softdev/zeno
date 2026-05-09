@@ -1,6 +1,7 @@
 import { Bell, Search, Sparkles, Zap, ShieldAlert, X } from 'lucide-react';
 import { useState } from 'react';
 import { useAppStore } from '../../stores/appStore';
+import toast from 'react-hot-toast';
 
 export function Topbar({ onSearchOpen }: { onSearchOpen: () => void }) {
   const { activeClientId, clients, sandboxMode, toggleSandbox } = useAppStore();
@@ -82,7 +83,12 @@ export function Topbar({ onSearchOpen }: { onSearchOpen: () => void }) {
                 ))}
               </select>
               <button
-                onClick={() => { setQuickTask(''); setShowQuickTask(false); }}
+                onClick={() => {
+                  if (quickTask.trim()) {
+                    toast.success(`Task delegated: "${quickTask.slice(0, 40)}${quickTask.length > 40 ? '...' : ''}"`);
+                  }
+                  setQuickTask(''); setShowQuickTask(false);
+                }}
                 className="px-4 py-1.5 bg-accent-primary text-white rounded-lg text-xs font-medium hover:brightness-110 transition-all"
               >
                 Delegate task
@@ -106,11 +112,11 @@ export function Topbar({ onSearchOpen }: { onSearchOpen: () => void }) {
         >
           <ShieldAlert size={16} />
         </button>
-        <button className="relative p-2 rounded-lg hover:bg-bg-hover text-text-secondary hover:text-text-primary transition-colors">
+        <button onClick={() => toast('Notifications coming soon')} className="relative p-2 rounded-lg hover:bg-bg-hover text-text-secondary hover:text-text-primary transition-colors">
           <Bell size={18} />
           <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-accent-danger" />
         </button>
-        <button className="p-2 rounded-lg hover:bg-bg-hover text-text-secondary hover:text-text-primary transition-colors">
+        <button onClick={() => toast('AI Assistant coming soon')} className="p-2 rounded-lg hover:bg-bg-hover text-text-secondary hover:text-text-primary transition-colors">
           <Sparkles size={18} />
         </button>
       </div>

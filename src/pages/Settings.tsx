@@ -1,9 +1,22 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Save, CreditCard, Globe, Bell, AlertTriangle, Download, Trash2, Palette, Link, Mail, ArrowUp, Key, Copy, Eye, EyeOff } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 export function Settings() {
   const [activeTab, setActiveTab] = useState('profile');
+  const [notifPrefs, setNotifPrefs] = useState<Record<string, { email: boolean; push: boolean }>>({
+    'Task completed': { email: true, push: true },
+    'Approval required': { email: true, push: true },
+    'Integration error': { email: true, push: false },
+    'Weekly digest': { email: true, push: false },
+    'New lead detected': { email: true, push: true },
+    'Agent error': { email: true, push: true },
+    'Billing alert': { email: true, push: false },
+    'Workflow failed': { email: true, push: true },
+    'Team member invited': { email: false, push: false },
+    'Usage limit (80%)': { email: true, push: false },
+  });
 
   const tabs = [
     { id: 'profile', label: 'Agency Profile', icon: Globe },
@@ -63,7 +76,7 @@ export function Settings() {
                   </select>
                 </div>
               </div>
-              <button className="flex items-center gap-2 px-4 py-2 bg-accent-primary text-white rounded-lg text-sm font-medium hover:brightness-110 transition-all">
+              <button onClick={() => toast.success('Changes saved')} className="flex items-center gap-2 px-4 py-2 bg-accent-primary text-white rounded-lg text-sm font-medium hover:brightness-110 transition-all">
                 <Save size={16} /> Save changes
               </button>
             </div>
@@ -108,8 +121,8 @@ export function Settings() {
               </div>
 
               <div className="flex gap-3">
-                <button className="flex items-center gap-1 px-4 py-2 bg-accent-primary text-white rounded-lg text-sm font-medium"><ArrowUp size={14} /> Upgrade to Scale</button>
-                <button className="px-4 py-2 border border-border-subtle rounded-lg text-sm text-text-secondary">View invoices</button>
+                <button onClick={() => toast('Upgrade flow coming soon')} className="flex items-center gap-1 px-4 py-2 bg-accent-primary text-white rounded-lg text-sm font-medium"><ArrowUp size={14} /> Upgrade to Scale</button>
+                <button onClick={() => toast('Invoice history coming soon')} className="px-4 py-2 border border-border-subtle rounded-lg text-sm text-text-secondary">View invoices</button>
               </div>
             </div>
 
@@ -122,7 +135,7 @@ export function Settings() {
                   <div className="text-sm text-text-primary">•••• 4242</div>
                   <div className="text-xs text-text-muted">Expires 12/2027</div>
                 </div>
-                <button className="ml-auto text-xs text-text-secondary hover:text-text-primary">Update</button>
+                <button onClick={() => toast('Payment method update coming soon')} className="ml-auto text-xs text-text-secondary hover:text-text-primary">Update</button>
               </div>
             </div>
 
@@ -143,7 +156,7 @@ export function Settings() {
                     <div className="flex items-center gap-3">
                       <span className="text-sm text-text-secondary font-mono">{inv.amount}</span>
                       <span className="text-xs px-2 py-0.5 rounded-full bg-accent-secondary/10 text-accent-secondary">{inv.status}</span>
-                      <button className="text-xs text-accent-primary hover:underline"><Download size={12} className="inline" /> PDF</button>
+                      <button onClick={() => toast('PDF download simulated')} className="text-xs text-accent-primary hover:underline"><Download size={12} className="inline" /> PDF</button>
                     </div>
                   </div>
                 ))}
@@ -283,14 +296,20 @@ export function Settings() {
                       <span className="text-[10px] text-text-muted ml-2 hidden sm:inline">{n.desc}</span>
                     </div>
                     <div className="w-12 flex justify-center">
-                      <div className="w-9 h-5 rounded-full bg-accent-secondary cursor-pointer relative">
-                        <div className="w-4 h-4 rounded-full bg-white absolute top-0.5 right-0.5 shadow" />
-                      </div>
+                      <button
+                        onClick={() => setNotifPrefs((prev) => ({ ...prev, [n.event]: { ...prev[n.event], email: !prev[n.event].email } }))}
+                        className={`w-9 h-5 rounded-full cursor-pointer transition-colors ${notifPrefs[n.event]?.email ? 'bg-accent-secondary' : 'bg-bg-elevated'}`}
+                      >
+                        <div className={`w-4 h-4 rounded-full bg-white shadow transition-transform ${notifPrefs[n.event]?.email ? 'translate-x-4' : 'translate-x-0.5'}`} style={{ marginTop: '1.5px' }} />
+                      </button>
                     </div>
                     <div className="w-12 flex justify-center">
-                      <div className="w-9 h-5 rounded-full bg-bg-elevated cursor-pointer relative">
-                        <div className="w-4 h-4 rounded-full bg-white absolute top-0.5 left-0.5 shadow" />
-                      </div>
+                      <button
+                        onClick={() => setNotifPrefs((prev) => ({ ...prev, [n.event]: { ...prev[n.event], push: !prev[n.event].push } }))}
+                        className={`w-9 h-5 rounded-full cursor-pointer transition-colors ${notifPrefs[n.event]?.push ? 'bg-accent-secondary' : 'bg-bg-elevated'}`}
+                      >
+                        <div className={`w-4 h-4 rounded-full bg-white shadow transition-transform ${notifPrefs[n.event]?.push ? 'translate-x-4' : 'translate-x-0.5'}`} style={{ marginTop: '1.5px' }} />
+                      </button>
                     </div>
                   </div>
                 ))}
@@ -310,7 +329,7 @@ export function Settings() {
                   <div className="text-sm text-text-primary font-medium">Export all data</div>
                   <div className="text-xs text-text-muted">Download a full export of your agency data</div>
                 </div>
-                <button className="px-3 py-1.5 border border-border-subtle rounded-lg text-sm text-text-secondary flex items-center gap-1">
+                <button onClick={() => toast('Export started')} className="px-3 py-1.5 border border-border-subtle rounded-lg text-sm text-text-secondary flex items-center gap-1">
                   <Download size={14} /> Export
                 </button>
               </div>
@@ -319,7 +338,7 @@ export function Settings() {
                   <div className="text-sm text-text-primary font-medium">Delete agency</div>
                   <div className="text-xs text-text-muted">Permanently delete your agency and all data</div>
                 </div>
-                <button className="px-3 py-1.5 border border-accent-danger/30 text-accent-danger rounded-lg text-sm flex items-center gap-1 hover:bg-accent-danger/10 transition-colors">
+                <button onClick={() => toast.error('Delete disabled in demo mode')} className="px-3 py-1.5 border border-accent-danger/30 text-accent-danger rounded-lg text-sm flex items-center gap-1 hover:bg-accent-danger/10 transition-colors">
                   <Trash2 size={14} /> Delete
                 </button>
               </div>

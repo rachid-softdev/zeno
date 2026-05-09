@@ -56,6 +56,8 @@ export function Onboarding() {
   const [goal, setGoal] = useState('seo');
   const [agents, setAgents] = useState(recommendedAgents.map((a) => ({ ...a })));
   const [selectedPainPoints, setSelectedPainPoints] = useState<string[]>([]);
+  const [agencyWebsite, setAgencyWebsite] = useState('https://atelierbold.fr');
+  const [selectedService, setSelectedService] = useState('');
   const [completed, setCompleted] = useState(false);
 
   const toggleTone = (tone: string) => {
@@ -101,13 +103,17 @@ export function Onboarding() {
                   <div className="space-y-4 mt-6">
                     <div>
                       <label className="text-sm text-text-secondary mb-1.5 block">Agency website</label>
-                      <input type="url" defaultValue="https://atelierbold.fr" className="w-full bg-bg-surface border border-border-subtle rounded-lg px-3 py-2.5 text-sm text-text-primary focus:outline-none focus:border-accent-primary" />
+                      <input type="url" value={agencyWebsite} onChange={(e) => setAgencyWebsite(e.target.value)} className="w-full bg-bg-surface border border-border-subtle rounded-lg px-3 py-2.5 text-sm text-text-primary focus:outline-none focus:border-accent-primary" />
                     </div>
                     <div>
                       <label className="text-sm text-text-secondary mb-1.5 block">Primary service</label>
                       <div className="grid grid-cols-2 gap-2">
                         {primaryServices.map((s) => (
-                          <button key={s.label} className="flex items-center gap-2 p-2.5 rounded-lg border border-border-subtle hover:border-border-active text-sm text-text-secondary hover:text-text-primary transition-colors text-left">
+                          <button
+                            key={s.label}
+                            onClick={() => setSelectedService(s.label)}
+                            className={`flex items-center gap-2 p-2.5 rounded-lg border text-sm transition-colors text-left ${selectedService === s.label ? 'border-accent-primary bg-accent-primary/10 text-accent-primary' : 'border-border-subtle text-text-secondary hover:text-text-primary hover:border-border-active'}`}
+                          >
                             {s.icon}<span className="truncate">{s.label}</span>
                           </button>
                         ))}

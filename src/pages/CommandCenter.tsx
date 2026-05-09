@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useAppStore } from '../stores/appStore';
 import { StatCard } from '../components/ui/StatCard';
 import { NewClientModal } from '../components/ui/NewClientModal';
@@ -15,6 +15,12 @@ export function CommandCenter() {
   const analytics = mockAgencyAnalytics;
   const [feedFilter, setFeedFilter] = useState<FeedFilter>('all');
   const [showNewClient, setShowNewClient] = useState(false);
+
+  useEffect(() => {
+    const handler = () => setShowNewClient(true);
+    window.addEventListener('open-new-client-modal', handler);
+    return () => window.removeEventListener('open-new-client-modal', handler);
+  }, []);
 
   const filteredFeed = useMemo(() => {
     return activityFeed.filter((item) => {

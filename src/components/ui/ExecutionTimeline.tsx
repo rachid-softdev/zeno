@@ -109,6 +109,7 @@ export function ExecutionTimeline({ workflowId, maxItems = 10 }: ExecutionTimeli
 
   const filtered = mockExecutions
     .filter((e) => filter === 'all' || e.status === filter)
+    .filter(() => true) // In real code: filter by workflowId
     .slice(0, maxItems);
 
   return (

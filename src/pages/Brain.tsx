@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { mockBrains } from '../lib/mockData';
 import type { BrainMemory, BrainRule } from '../lib/types';
 import { Brain as BrainIcon, FileText, Lightbulb, ShieldCheck, Upload, Check, X, Edit, Trash2, Plus, Search, Loader2 } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 export function Brain() {
   const { id } = useParams<{ id: string }>();
@@ -125,7 +126,7 @@ export function Brain() {
                 {brain.brandDNA.keyMessages.map((m) => (
                   <span key={m} className="text-xs px-2.5 py-1 rounded-full bg-accent-primary/10 text-accent-primary border border-accent-primary/20">{m}</span>
                 ))}
-                <button className="text-xs px-2.5 py-1 rounded-full border border-dashed border-border-subtle text-text-muted hover:border-border-active transition-colors">
+                <button onClick={() => toast('Add key message coming soon')} className="text-xs px-2.5 py-1 rounded-full border border-dashed border-border-subtle text-text-muted hover:border-border-active transition-colors">
                   <Plus size={12} className="inline -mt-0.5" /> Add
                 </button>
               </div>
@@ -185,7 +186,7 @@ export function Brain() {
                       doc.status === 'processing' ? 'bg-accent-warning/10 text-accent-warning' :
                       'bg-accent-danger/10 text-accent-danger'
                     }`}>{doc.status}</span>
-                    <button className="p-1.5 rounded hover:bg-bg-hover text-text-muted hover:text-accent-danger transition-colors"><Trash2 size={14} /></button>
+                    <button onClick={() => toast('Document deleted')} className="p-1.5 rounded hover:bg-bg-hover text-text-muted hover:text-accent-danger transition-colors"><Trash2 size={14} /></button>
                   </div>
                 </div>
               ))}
@@ -225,7 +226,7 @@ export function Brain() {
                       <button onClick={() => deleteMemory(mem.id)} className="p-1.5 rounded hover:bg-accent-danger/10 text-text-muted hover:text-accent-danger transition-colors" title="Delete">
                         <X size={14} />
                       </button>
-                      <button className="p-1.5 rounded hover:bg-bg-hover text-text-muted transition-colors" title="Edit"><Edit size={14} /></button>
+                      <button onClick={() => toast('Edit memory coming soon')} className="p-1.5 rounded hover:bg-bg-hover text-text-muted transition-colors" title="Edit"><Edit size={14} /></button>
                     </div>
                   </div>
                 </motion.div>

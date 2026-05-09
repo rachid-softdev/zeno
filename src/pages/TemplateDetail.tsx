@@ -2,6 +2,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { mockTemplates, mockClients } from '../lib/mockData';
 import { ArrowLeft, Edit, Trash2, Copy, Share2, Globe, Tag, Wrench, History, RefreshCw } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 export function TemplateDetail() {
   const { tid } = useParams<{ tid: string }>();
@@ -44,8 +45,8 @@ export function TemplateDetail() {
             </div>
             <div className="flex items-center gap-1.5">
               <button className="flex items-center gap-1.5 px-3 py-1.5 bg-accent-primary text-white rounded-lg text-xs font-medium"><Share2 size={14} /> Deploy</button>
-              <button className="p-1.5 rounded-lg border border-border-subtle text-text-secondary hover:border-border-active"><Copy size={14} /></button>
-              <button className="p-1.5 rounded-lg border border-border-subtle text-text-secondary hover:border-border-active"><Trash2 size={14} /></button>
+              <button onClick={() => toast.success('Template duplicated')} className="p-1.5 rounded-lg border border-border-subtle text-text-secondary hover:border-border-active"><Copy size={14} /></button>
+              <button onClick={() => toast('Delete confirmation coming soon')} className="p-1.5 rounded-lg border border-border-subtle text-text-secondary hover:border-border-active"><Trash2 size={14} /></button>
             </div>
           </div>
         </div>

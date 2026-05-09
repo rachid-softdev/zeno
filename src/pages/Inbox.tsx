@@ -2,6 +2,7 @@ import { useParams } from 'react-router-dom';
 import { useState } from 'react';
 import { mockInboxThreads } from '../lib/mockData';
 import { Mail, MessageCircle, Camera, Briefcase, AlertCircle, CheckCircle2, Clock, Search, Send, Reply, UserPlus, MoreHorizontal } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 const channelIcons: Record<string, React.ReactNode> = {
   gmail: <Mail size={14} />,
@@ -118,8 +119,8 @@ export function Inbox() {
                   </div>
                 </div>
                 <div className="flex items-center gap-1">
-                  <button className="p-1.5 rounded-lg hover:bg-bg-hover text-text-muted"><UserPlus size={14} /></button>
-                  <button className="p-1.5 rounded-lg hover:bg-bg-hover text-text-muted"><MoreHorizontal size={14} /></button>
+                  <button onClick={() => toast('Contact info coming soon')} className="p-1.5 rounded-lg hover:bg-bg-hover text-text-muted"><UserPlus size={14} /></button>
+                  <button onClick={() => toast('More actions coming soon')} className="p-1.5 rounded-lg hover:bg-bg-hover text-text-muted"><MoreHorizontal size={14} /></button>
                 </div>
               </div>
 
@@ -172,9 +173,11 @@ export function Inbox() {
                     rows={2}
                     className="flex-1 bg-bg-base border border-border-subtle rounded-xl px-4 py-2.5 text-sm text-text-primary placeholder:text-text-muted focus:outline-none focus:border-accent-primary resize-none"
                   />
-                  <button className="p-2.5 rounded-xl bg-accent-primary text-white hover:brightness-110 transition-all active:scale-95">
-                    <Send size={18} />
-                  </button>
+                <button
+                  onClick={() => { setReplyText(''); toast.success('Reply sent (demo mode)'); }}
+                  className="p-2.5 rounded-xl bg-accent-primary text-white hover:brightness-110 transition-all active:scale-95">
+                  <Send size={18} />
+                </button>
                 </div>
               </div>
             </>

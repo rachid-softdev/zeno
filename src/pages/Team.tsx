@@ -1,5 +1,6 @@
 import { mockTeam } from '../lib/mockData';
 import { Plus, MoreHorizontal, Shield, UserCog, User } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 export function Team() {
   const roleIcons: Record<string, React.ReactNode> = {
@@ -15,7 +16,9 @@ export function Team() {
           <h1 className="font-display text-2xl font-bold text-text-primary">Team Members ({mockTeam.length})</h1>
           <p className="text-text-secondary text-sm mt-1">Manage roles and client assignments.</p>
         </div>
-        <button className="flex items-center gap-2 px-4 py-2 bg-accent-primary text-white rounded-lg text-sm font-medium hover:brightness-110 transition-all active:scale-95">
+        <button
+          onClick={() => toast.success('Invite modal coming soon')}
+          className="flex items-center gap-2 px-4 py-2 bg-accent-primary text-white rounded-lg text-sm font-medium hover:brightness-110 transition-all active:scale-95">
           <Plus size={16} /> Invite member
         </button>
       </div>
@@ -56,7 +59,9 @@ export function Team() {
                 </td>
                 <td className="px-5 py-3 text-text-muted text-xs">{new Date(member.lastActive).toLocaleDateString()}</td>
                 <td className="px-5 py-3 text-right">
-                  <button className="p-1.5 rounded hover:bg-bg-hover text-text-muted">
+                  <button
+                    onClick={() => toast('Member actions coming soon')}
+                    className="p-1.5 rounded hover:bg-bg-hover text-text-muted">
                     <MoreHorizontal size={16} />
                   </button>
                 </td>

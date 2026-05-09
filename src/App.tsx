@@ -60,6 +60,8 @@ function App() {
             <Route path="/app" element={<AuthGuard><AppShell /></AuthGuard>}>
               <Route index element={<Navigate to="/app/command" replace />} />
               <Route path="command" element={<CommandCenter />} />
+              <Route path="onboarding" element={<Onboarding />} />
+              <Route path="clients/new" element={<CommandCenter />} />
               <Route path="analytics" element={<AgencyAnalytics />} />
               <Route path="templates" element={<Templates />} />
               <Route path="templates/:tid" element={<TemplateDetail />} />
