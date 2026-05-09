@@ -55,6 +55,7 @@ export function Onboarding() {
   const [tones, setTones] = useState<string[]>(['Professional', 'Technical', 'Bold']);
   const [goal, setGoal] = useState('seo');
   const [agents, setAgents] = useState(recommendedAgents.map((a) => ({ ...a })));
+  const [selectedPainPoints, setSelectedPainPoints] = useState<string[]>([]);
   const [completed, setCompleted] = useState(false);
 
   const toggleTone = (tone: string) => {
@@ -109,6 +110,18 @@ export function Onboarding() {
                           <button key={s.label} className="flex items-center gap-2 p-2.5 rounded-lg border border-border-subtle hover:border-border-active text-sm text-text-secondary hover:text-text-primary transition-colors text-left">
                             {s.icon}<span className="truncate">{s.label}</span>
                           </button>
+                        ))}
+                      </div>
+                    </div>
+                    <div>
+                      <label className="text-sm text-text-secondary mb-1.5 block">Main pain points</label>
+                      <div className="flex flex-wrap gap-1.5">
+                        {painPoints.map((p) => (
+                          <button
+                            key={p}
+                            onClick={() => setSelectedPainPoints((prev) => prev.includes(p) ? prev.filter((x) => x !== p) : [...prev, p])}
+                            className={`px-3 py-1.5 rounded-full text-xs border transition-colors ${selectedPainPoints.includes(p) ? 'border-accent-primary bg-accent-primary/10 text-accent-primary' : 'border-border-subtle text-text-muted hover:border-border-active'}`}
+                          >{p}</button>
                         ))}
                       </div>
                     </div>

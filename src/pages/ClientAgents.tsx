@@ -1,10 +1,10 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { getClientAgents } from '../lib/mockData';
-import { Bot, MessageCircle, Settings, BarChart3, MoreHorizontal, Plus, X, ArrowRight, ArrowLeft, Check, Sparkles } from 'lucide-react';
+import { getClientAgents, mockTemplates } from '../lib/mockData';
+import { Bot, MessageCircle, Settings, BarChart3, MoreHorizontal, Plus, X, ArrowRight, ArrowLeft, Check, Sparkles, Search, Upload, Loader2 } from 'lucide-react';
 
-type CreatorStep = 'choose' | 'name' | 'capabilities' | 'personality' | 'tools' | 'test' | 'done';
+type CreatorStep = 'choose' | 'template-pick' | 'name' | 'capabilities' | 'personality' | 'tools' | 'training' | 'test' | 'done';
 
 export function ClientAgents() {
   const { id } = useParams<{ id: string }>();
@@ -18,6 +18,9 @@ export function ClientAgents() {
   const [selectedCapabilities, setSelectedCapabilities] = useState<string[]>([]);
   const [personalityFormal, setPersonalityFormal] = useState(50);
   const [selectedTools, setSelectedTools] = useState<string[]>([]);
+  const [trainingFiles, setTrainingFiles] = useState<string[]>([]);
+  const [uploading, setUploading] = useState(false);
+  const [templateSearch, setTemplateSearch] = useState('');
 
   const allCapabilities = ['Content generation', 'SEO optimization', 'Keyword research', 'Email classification', 'Response drafting', 'Lead scoring', 'Email outreach', 'Calendar booking', 'Social scheduling', 'Data analysis', 'Report generation', 'Post generation', 'Visual content'];
 
@@ -118,7 +121,7 @@ export function ClientAgents() {
                 {creatorStep === 'choose' && (
                   <div className="space-y-3">
                     <button
-                      onClick={() => { setCreatorMode('template'); setCreatorStep('capabilities'); }}
+                      onClick={() => { setCreatorMode('template'); setCreatorStep('template-pick'); }}
                       className="w-full p-4 rounded-xl border border-border-subtle hover:border-accent-primary/50 bg-bg-base text-left transition-colors"
                     >
                       <div className="flex items-center gap-3">
@@ -141,6 +144,47 @@ export function ClientAgents() {
                         </div>
                       </div>
                     </button>
+                  </div>
+                )}
+
+                {creatorStep === 'template-pick' && (
+                  <div className="space-y-4">
+                    <h3 className="font-display font-semibold text-text-primary">Choose a Template</h3>
+                    <div className="relative">
+                      <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted" />
+                      <input
+                        value={templateSearch}
+                        onChange={(e) => setTemplateSearch(e.target.value)}
+                        placeholder="Search templates..."
+                        className="w-full bg-bg-base border border-border-subtle rounded-lg pl-9 pr-3 py-2.5 text-sm text-text-primary placeholder:text-text-muted focus:outline-none focus:border-accent-primary"
+                      />
+                    </div>
+                    <div className="space-y-2 max-h-64 overflow-y-auto">
+                      {mockTemplates
+                        .filter((t) => !templateSearch || t.name.toLowerCase().includes(templateSearch.toLowerCase()))
+                        .map((tpl) => (
+                          <div
+                            key={tpl.id}
+                            onClick={() => {
+                              setAgentName(tpl.name);
+                              setAgentRole(tpl.role);
+                              setSelectedCapabilities(tpl.capabilities);
+                              setSelectedTools(tpl.tools);
+                              setCreatorStep('test');
+                            }}
+                            className="flex items-center gap-3 p-3 rounded-xl border border-border-subtle hover:border-accent-primary/30 bg-bg-base cursor-pointer transition-colors"
+                          >
+                            <div className="w-8 h-8 rounded-lg bg-accent-primary/10 flex items-center justify-center text-sm text-accent-primary">
+                              {tpl.category === 'content' ? '✍️' : tpl.category === 'sales' ? '🎯' : tpl.category === 'support' ? '📧' : tpl.category === 'analytics' ? '📊' : '⚙️'}
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <div className="text-sm text-text-primary font-medium">{tpl.name}</div>
+                              <div className="text-xs text-text-muted">{tpl.description.slice(0, 60)}...</div>
+                            </div>
+                            <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-bg-hover text-text-muted">{tpl.category}</span>
+                          </div>
+                        ))}
+                    </div>
                   </div>
                 )}
 
@@ -206,6 +250,63 @@ export function ClientAgents() {
                   </div>
                 )}
 
+                {creatorStep === 'training' && (
+                  <div className="space-y-4">
+                    <h3 className="font-display font-semibold text-text-primary">Training Data</h3>
+                    <p className="text-xs text-text-muted">Upload documents to train this agent on your client's knowledge.</p>
+
+                    {/* Upload zone */}
+                    <div
+                      onClick={() => {
+                        if (!uploading) {
+                          setUploading(true);
+                          setTimeout(() => {
+                            setTrainingFiles((prev) => [...prev, `brand_guidelines_${Date.now()}.pdf`]);
+                            setUploading(false);
+                          }, 2000);
+                        }
+                      }}
+                      className="bg-bg-base border-2 border-dashed border-border-subtle rounded-xl p-8 text-center cursor-pointer hover:border-border-active transition-colors"
+                    >
+                      {uploading ? (
+                        <div className="space-y-2">
+                          <Loader2 size={24} className="mx-auto text-accent-primary animate-spin" />
+                          <p className="text-xs text-text-secondary">Extracting knowledge...</p>
+                          <div className="w-36 mx-auto h-1.5 bg-bg-elevated rounded-full overflow-hidden">
+                            <motion.div className="h-full bg-accent-primary rounded-full" initial={{ width: 0 }} animate={{ width: '100%' }} transition={{ duration: 2 }} />
+                          </div>
+                        </div>
+                      ) : (
+                        <>
+                          <Upload size={24} className="mx-auto mb-2 text-text-muted" />
+                          <p className="text-sm text-text-secondary">Drag & drop or click to upload</p>
+                          <p className="text-xs text-text-muted mt-1">PDF, DOCX, TXT, URLs accepted</p>
+                        </>
+                      )}
+                    </div>
+
+                    {/* Uploaded files */}
+                    {trainingFiles.length > 0 && (
+                      <div className="space-y-1.5">
+                        {trainingFiles.map((file, i) => (
+                          <div key={i} className="flex items-center justify-between p-2.5 rounded-lg bg-bg-base border border-border-subtle">
+                            <div className="flex items-center gap-2">
+                              <div className="w-6 h-6 rounded bg-accent-secondary/10 flex items-center justify-center text-accent-secondary text-[10px] font-bold">PDF</div>
+                              <span className="text-xs text-text-secondary">{file}</span>
+                            </div>
+                            <button
+                              onClick={() => setTrainingFiles((prev) => prev.filter((_, j) => j !== i))}
+                              className="p-1 rounded hover:bg-bg-hover text-text-muted hover:text-accent-danger transition-colors"
+                            >
+                              <X size={12} />
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )}
+
                 {creatorStep === 'test' && (
                   <div className="space-y-4">
                     <h3 className="font-display font-semibold text-text-primary">Test your agent</h3>
@@ -238,12 +339,14 @@ export function ClientAgents() {
                 <button
                   onClick={() => {
                     if (creatorStep === 'choose') closeCreator();
+                    else if (creatorStep === 'template-pick') setCreatorStep('choose');
                     else if (creatorStep === 'capabilities' && creatorMode === 'scratch') setCreatorStep('name');
                     else if (creatorStep === 'name') setCreatorStep('choose');
-                    else if (creatorStep === 'capabilities') setCreatorStep('choose');
+                    else if (creatorStep === 'capabilities') setCreatorStep('template-pick');
                     else if (creatorStep === 'personality') setCreatorStep('capabilities');
                     else if (creatorStep === 'tools') setCreatorStep('personality');
-                    else if (creatorStep === 'test') setCreatorStep('tools');
+                    else if (creatorStep === 'training') setCreatorStep('tools');
+                    else if (creatorStep === 'test') setCreatorStep('training');
                     else setCreatorStep('choose');
                   }}
                   className="flex items-center gap-1 text-sm text-text-muted hover:text-text-secondary"
@@ -257,12 +360,13 @@ export function ClientAgents() {
                 ) : (
                   <button
                     onClick={() => {
-                      if (creatorStep === 'choose' && creatorMode === 'template') setCreatorStep('capabilities');
+                      if (creatorStep === 'choose' && creatorMode === 'template') setCreatorStep('template-pick');
                       else if (creatorStep === 'choose') setCreatorStep('name');
                       else if (creatorStep === 'name') setCreatorStep('capabilities');
                       else if (creatorStep === 'capabilities') setCreatorStep('personality');
                       else if (creatorStep === 'personality') setCreatorStep('tools');
-                      else if (creatorStep === 'tools') setCreatorStep('test');
+                      else if (creatorStep === 'tools') setCreatorStep('training');
+                      else if (creatorStep === 'training') setCreatorStep('test');
                       else if (creatorStep === 'test') setCreatorStep('done');
                     }}
                     className="flex items-center gap-1.5 px-6 py-2.5 bg-accent-primary text-white rounded-lg text-sm font-medium hover:brightness-110 transition-all"

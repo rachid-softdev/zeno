@@ -17,6 +17,7 @@ export function Landing() {
   const [mobileMenu, setMobileMenu] = useState(false);
   const [faqOpen, setFaqOpen] = useState<number | null>(null);
   const [showCalc, setShowCalc] = useState(false);
+  const [showVideo, setShowVideo] = useState(false);
   const [calcEmployees, setCalcEmployees] = useState(10);
   const [calcRate, setCalcRate] = useState(25);
   const [calcHours, setCalcHours] = useState(40);
@@ -94,14 +95,92 @@ export function Landing() {
             <Link to="/signup" className="px-8 py-3.5 bg-accent-primary hover:brightness-110 text-white font-medium rounded-xl transition-all active:scale-95 text-lg">
               Start free — 14 days
             </Link>
-            <a href="#" className="flex items-center gap-2 px-6 py-3.5 text-text-secondary hover:text-text-primary transition-colors">
+            <button onClick={() => setShowVideo(true)} className="flex items-center gap-2 px-6 py-3.5 text-text-secondary hover:text-text-primary transition-colors">
               <Play size={18} /> See it in 90 seconds
-            </a>
+            </button>
           </motion.div>
 
           <motion.p variants={fadeUp} className="text-xs text-text-muted">
             No credit card required · Cancel anytime · GDPR compliant
           </motion.p>
+
+          {/* Product Screenshot Mockup */}
+          <motion.div
+            variants={fadeUp}
+            className="hidden lg:block relative mt-12 max-w-3xl mx-auto"
+          >
+            {/* Glow */}
+            <div className="absolute inset-0 bg-accent-primary/20 rounded-2xl blur-3xl transform scale-90 translate-y-4" />
+
+            {/* Browser frame */}
+            <div className="relative bg-bg-surface border border-border-subtle rounded-2xl overflow-hidden shadow-2xl">
+              {/* Title bar */}
+              <div className="flex items-center gap-2 px-4 py-2.5 border-b border-border-subtle bg-bg-elevated/50">
+                <div className="flex gap-1.5">
+                  <div className="w-2.5 h-2.5 rounded-full bg-accent-danger/60" />
+                  <div className="w-2.5 h-2.5 rounded-full bg-accent-warning/60" />
+                  <div className="w-2.5 h-2.5 rounded-full bg-accent-secondary/60" />
+                </div>
+                <div className="flex-1 mx-4">
+                  <div className="bg-bg-base rounded-md px-3 py-1 text-[10px] text-text-muted text-center truncate">
+                    app.zeno.ai/command
+                  </div>
+                </div>
+              </div>
+
+              {/* Dashboard preview */}
+              <div className="p-4 space-y-3">
+                {/* KPI row */}
+                <div className="grid grid-cols-4 gap-3">
+                  {[247, 14, '68h', 32].map((v, i) => (
+                    <div key={i} className="bg-bg-base rounded-lg p-2.5 border border-border-subtle">
+                      <div className="text-[8px] text-text-muted uppercase tracking-wider">Tasks today</div>
+                      <div className="font-mono text-sm font-medium text-text-primary">{v}</div>
+                    </div>
+                  ))}
+                </div>
+                {/* Feed */}
+                <div className="bg-bg-base rounded-lg p-3 border border-border-subtle space-y-2">
+                  {[
+                    { color: '#3B82F6', label: 'Hexa Corp — Sofia — Published article...' },
+                    { color: '#10B981', label: 'Celesty Group — Max — Booked call...' },
+                    { color: '#EC4899', label: 'Makers & Co — Mila — Post needs review ⚠' },
+                  ].map((item, i) => (
+                    <div key={i} className="flex items-center gap-2">
+                      <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: item.color }} />
+                      <span className="text-[8px] text-text-muted truncate">{item.label}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Floating elements */}
+            <motion.div
+              animate={{ y: [0, -8, 0] }}
+              transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+              className="absolute -top-6 -right-12 w-20 bg-bg-surface border border-border-subtle rounded-xl p-2 shadow-lg"
+            >
+              <div className="flex items-center gap-1.5">
+                <div className="w-4 h-4 rounded bg-accent-primary flex items-center justify-center text-[6px] text-white font-bold">M</div>
+                <div>
+                  <div className="text-[7px] text-text-secondary font-medium">Max</div>
+                  <div className="text-[6px] text-accent-secondary">Lead scored</div>
+                </div>
+              </div>
+            </motion.div>
+            <motion.div
+              animate={{ y: [0, 5, 0] }}
+              transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
+              className="absolute -bottom-4 -left-8 bg-bg-surface border border-accent-secondary/30 rounded-lg px-2.5 py-1.5 shadow-lg"
+            >
+              <div className="flex items-center gap-1.5 text-[7px]">
+                <span className="w-1.5 h-1.5 rounded-full bg-accent-secondary" />
+                <span className="text-text-secondary">Task completed</span>
+                <span className="text-accent-secondary font-medium">✓</span>
+              </div>
+            </motion.div>
+          </motion.div>
         </motion.div>
       </section>
 
@@ -563,6 +642,37 @@ export function Landing() {
                 <Link to="/signup" className="block w-full py-2.5 bg-accent-primary text-white text-center rounded-lg font-medium text-sm hover:brightness-110 transition-all">
                   Start saving → 14-day free trial
                 </Link>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Video Modal */}
+      <AnimatePresence>
+        {showVideo && (
+          <motion.div
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-6"
+            onClick={() => setShowVideo(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.95, opacity: 0 }}
+              className="bg-bg-surface border border-border-subtle rounded-2xl w-full max-w-3xl overflow-hidden shadow-2xl"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="flex items-center justify-between px-5 py-3 border-b border-border-subtle">
+                <h3 className="font-display font-semibold text-text-primary text-sm">Zeno — 90-second overview</h3>
+                <button onClick={() => setShowVideo(false)} className="p-1.5 rounded-lg hover:bg-bg-hover text-text-muted"><X size={18} /></button>
+              </div>
+              <div className="aspect-video bg-bg-base flex items-center justify-center">
+                <div className="text-center space-y-4">
+                  <div className="w-20 h-20 mx-auto rounded-full bg-accent-primary/10 flex items-center justify-center">
+                    <Play size={32} className="text-accent-primary ml-1" />
+                  </div>
+                  <p className="text-text-secondary text-sm">Video walkthrough coming soon</p>
+                  <p className="text-text-muted text-xs">A complete tour of Zeno in 90 seconds.</p>
+                </div>
               </div>
             </motion.div>
           </motion.div>
